@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  </head>
+  <body>
+    <div ng-app="mainApp">
+		<div ng-controller="advisorPageCtrl">
+			<advisor-page></advisor-page>
+		</div>
+    </div>
+
+    <script>
+    	var mainApp = angular.module("mainApp", []);
+    	mainApp.controller('advisorPageCtrl',['$scope',function($scope){
+    		$scope.advisor={};
+    		$scope.advisor.pages=[{"pageTxt":"page Text","pageNum":1,"pageQues":[{"Qtxt":"qtxt1","Qtyp":"qtyp1","QMdt":true}]},
+    						{"pageTxt":"page Text","pageNum":2,"pageQues":[{"Qtxt":"qtxt2","Qtyp":"qtyp2","QMdt":false}]},
+    						{"pageTxt":"page Text","pageNum":3,"pageQues":[{"Qtxt":"qtxt3","Qtyp":"qtyp2","QMdt":false}]},
+    						{"pageTxt":"page Text","pageNum":4,"pageQues":[{"Qtxt":"qtxt3","Qtyp":"qtyp2","QMdt":false}]}];
+    						
+    		 $scope.angularJsExerciseFilter = function() {
+		       		 return function (data) {
+		            	if(data.pageNum%2==0){
+		            		return data;
+		            	}
+		        };
+		    };
+    		
+    	}]);
+    	mainApp.directive('advisorPage', function() {
+    		 return {
+    		restrict: 'E',
+    		template: '<div class="smrt42-page" ng-repeat="data in advisor.pages | filter:angularJsExerciseFilter()" ng-class="{\'smrt42-first-page\':$first, \'smrt42-last-page\':$last}"><div class="smrt42-page-text">{{data.pageTxt}}</div>'+
+    		'<div class="smrt42-page-number">{{data.pageNum}}</div>'+
+    		'<div ng-if="data.pageNum>3">bigger than 3</div>'+
+    		'<div class="smrt42-question" ng-repeat="ques in data.pageQues" ng-class="{\'smrt42-mandatory-question\':ques.QMdt}">'+
+    		'<div class="smrt42-question-text">{{ques.Qtxt}}</div>'+
+			'<div class="smrt42-question-type">{{ques.Qtyp}}</div></div></div>'
+  			};
+    	});
+
+    </script>
+    
+  </body>
+</html>
